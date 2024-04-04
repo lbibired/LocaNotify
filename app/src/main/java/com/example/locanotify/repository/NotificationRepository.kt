@@ -1,8 +1,8 @@
-package com.example.locaanotify.repository
+package com.example.locanotify.repository
 
 import androidx.lifecycle.LiveData
-import com.example.locaanotify.room.Notification
-import com.example.locaanotify.room.NotificationDAO
+import com.example.locanotify.room.Notification
+import com.example.locanotify.room.NotificationDAO
 
 class NotificationRepository(private val notificationDAO: NotificationDAO) {
 

@@ -1,18 +1,16 @@
-package com.example.locaanotify.viewmodel
+package com.example.locanotify.viewmodel
 
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.example.locaanotify.repository.NotificationRepository
-import com.example.locaanotify.room.Notification
-import com.example.locaanotify.room.NotificationDatabase
+import com.example.locanotify.repository.NotificationRepository
+import com.example.locanotify.room.Notification
+import com.example.locanotify.room.NotificationDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
+
 
 class NotificationViewModel (application: Application) :AndroidViewModel(application) {
 

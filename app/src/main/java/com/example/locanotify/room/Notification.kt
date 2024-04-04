@@ -1,4 +1,4 @@
-package com.example.locaanotify.room
+package com.example.locanotify.room
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
