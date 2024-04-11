@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.locanotify.R
+import com.example.locanotify.locationutils.LocationService
 import com.example.locanotify.room.Notification
 import com.example.locanotify.utils.NotificationClickDeleteInterface
 import com.example.locanotify.utils.NotificationClickInterface
@@ -70,6 +71,12 @@ class MainActivity : AppCompatActivity(), NotificationClickInterface,
             val intent = Intent(this@MainActivity, AddNotification::class.java)
             startActivity(intent)
             this.finish()
+        }
+        val serviceIntent = Intent(applicationContext, LocationService::class.java)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(serviceIntent)
+        } else {
+            startService(serviceIntent)
         }
 
     }

@@ -1,7 +1,10 @@
 package com.example.locanotify.views
 
+import android.content.ContentValues.TAG
 import android.content.Intent
+import android.net.http.UrlRequest
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -10,6 +13,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.locanotify.R
 import com.example.locanotify.room.Notification
 import com.example.locanotify.viewmodel.NotificationViewModel
+import com.google.android.gms.common.api.Status
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.AutocompleteActivity
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -19,6 +28,8 @@ class AddNotification : AppCompatActivity() {
     lateinit var notificationLatitude : EditText
     lateinit var notificationLongitude : EditText
     lateinit var saveBtn: Button
+    lateinit var addBtn: Button
+
 
 
     lateinit var viewModal: NotificationViewModel
@@ -27,6 +38,8 @@ class AddNotification : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_notification)
+        Places.initialize(applicationContext, "AIzaSyD_OebZjGxFltaZNbFmIyvy5p6zzOTnG6I")
+        val placesClient = Places.createClient(this)
 
 
         viewModal = ViewModelProvider(
@@ -39,6 +52,16 @@ class AddNotification : AppCompatActivity() {
         saveBtn = findViewById(R.id.idBtn)
         notificationLatitude = findViewById(R.id.idLatitude)
         notificationLongitude = findViewById(R.id.idLongitude)
+        addBtn = findViewById(R.id.button)
+
+        addBtn.setOnClickListener{
+            val fields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG)
+
+            // Start the autocomplete intent.
+            val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
+                .build(this)
+            startActivityForResult(intent,1)
+        }
 
         val notificationType = intent.getStringExtra("NotificationType")
         if (notificationType.equals("Edit")) {
@@ -53,6 +76,7 @@ class AddNotification : AppCompatActivity() {
             notificationEdt.setText(notificationDescription)
             notificationLatitude.setText(notificationLatitude1)
             notificationLongitude.setText(notificationLongitude1)
+
         } else {
             saveBtn.setText("Save Notification")
         }
@@ -84,6 +108,25 @@ class AddNotification : AppCompatActivity() {
 
             startActivity(Intent(applicationContext, MainActivity::class.java))
             this.finish()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                val place = Autocomplete.getPlaceFromIntent(data)
+                val lat = place.latLng.latitude.toString()
+                val log = place.latLng.longitude.toString()
+                notificationLatitude.setText(lat)
+                notificationLongitude.setText(log)
+                Log.i(TAG, "Place: " + place.name + ", " + place.id+" "+place.latLng)
+            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+                val status: Status = Autocomplete.getStatusFromIntent(data)
+                Log.i(TAG, status.toString())
+            } else if (resultCode == RESULT_CANCELED) {
+                // The user canceled the operation.
+            }
         }
     }
 }
