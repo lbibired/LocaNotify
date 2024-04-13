@@ -4,7 +4,6 @@ import android.app.NotificationManager
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.location.Location
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
@@ -27,7 +26,6 @@ import kotlinx.coroutines.flow.onEach
 class LocationService: Service() {
 
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
-    private val serviceScope2 = CoroutineScope(SupervisorJob() + Dispatchers.Default)
     private lateinit var locationClient: LocationClient
     private lateinit var allNotifications : LiveData<List<Notification>>
     private lateinit var repository : NotificationRepository
@@ -88,7 +86,7 @@ class LocationService: Service() {
                 {
                     Log.d("debug", lo.toString())
                     val isInRange = LocationUtils.isWithinRange(lo.latitude,
-                        lo.longitude,lat,lon,1.0)
+                        lo.longitude,lat,lon,0.4)
 
                     if(isInRange == true )
                     {
