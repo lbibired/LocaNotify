@@ -5,23 +5,25 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
-    app:cardCornerRadius="5dp"
-    android:background="@color/black"
+    app:cardCornerRadius="10dp"
+    android:background="@color/blue"
     app:cardElevation="3dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/black"
-        android:layout_margin="4dp">
+        android:background="@color/blue"
+        android:padding="10dp"
+        >
 
         <TextView
             android:id="@+id/idTVNotification"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="3dp"
+            android:layout_margin="5dp"
+            android:padding="3dp"
             android:layout_toLeftOf="@id/idIVDelete"
-            android:padding="4dp"
+            android:background="@color/blue"
             android:text="Notification"
             android:textColor="@color/white"
             android:textSize="18sp" />
@@ -31,6 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/idTVNotification"
             android:layout_margin="3dp"
+            android:background="@color/blue"
             android:layout_toLeftOf="@id/idIVDelete"
             android:padding="4dp"
             android:text="Updated At"
@@ -45,6 +48,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:background="@color/blue"
             android:layout_margin="3dp"
             android:padding="3dp"
             android:src="@drawable/baseline_delete_24"

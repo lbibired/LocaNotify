@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatButton
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -20,6 +21,7 @@ import com.example.locanotify.utils.NotificationClickInterface
 import com.example.locanotify.utils.NotificationRVAdapter
 import com.example.locanotify.viewmodel.NotificationViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.auth.FirebaseAuth
 
 
 class MainActivity : AppCompatActivity(), NotificationClickInterface,
@@ -30,7 +32,7 @@ class MainActivity : AppCompatActivity(), NotificationClickInterface,
     lateinit var viewModal: NotificationViewModel
     lateinit var notificationsRV: RecyclerView
     lateinit var addFAB: FloatingActionButton
-
+    lateinit var logout: AppCompatButton
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -46,7 +48,13 @@ class MainActivity : AppCompatActivity(), NotificationClickInterface,
         setContentView(R.layout.activity_main)
         notificationsRV = findViewById(R.id.notificationRV)
         addFAB = findViewById(R.id.idFAB)
-
+        logout = findViewById(R.id.logout)
+        logout.setOnClickListener {
+            FirebaseAuth.getInstance().signOut();
+            var intent = Intent(this,sign_in::class.java)
+            startActivity(intent)
+            Toast.makeText(applicationContext,"Logout Successfully",Toast.LENGTH_SHORT)
+        }
 
         notificationsRV.layoutManager = LinearLayoutManager(this)
 
