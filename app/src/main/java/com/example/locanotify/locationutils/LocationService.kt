@@ -74,14 +74,14 @@ class LocationService: Service() {
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-
+        var flag = 1
         locationClient
-            .getLocationUpdates(60000)
+            .getLocationUpdates(5000)
             .catch { e -> e.printStackTrace() }
             .onEach { location ->
                 val lat = location.latitude
                 val lon = location.longitude
-
+                var flag = 1
                 for (lo in locations)
                 {
                     Log.d("debug", lo.toString())
@@ -95,9 +95,23 @@ class LocationService: Service() {
                         ).setContentTitle(lo.notificationTitle)
                             .setOngoing(true)
                         notificationManager.notify(1, updatedNotification.build())
+                        flag=0
                         break
                     }
+
                 }
+                if(flag == 1)
+                {
+                    val notification = NotificationCompat.Builder(this, "location")
+                        .setContentTitle("Tracking location...")
+                        .setContentText("")
+                        .setSmallIcon(R.drawable.ic_launcher_background)
+                        .setOngoing(true)
+                        .setAutoCancel(true)
+                        .setOngoing(true)
+                    notificationManager.notify(1, notification.build())
+                }
+
 
             }
             .launchIn(serviceScope)
