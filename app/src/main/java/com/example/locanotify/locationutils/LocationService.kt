@@ -86,7 +86,7 @@ class LocationService: Service() {
                 {
                     Log.d("debug", lo.toString())
                     val isInRange = LocationUtils.isWithinRange(lo.latitude,
-                        lo.longitude,lat,lon,0.4)
+                        lo.longitude,lat,lon,0.3)
 
                     if(isInRange == true )
                     {
