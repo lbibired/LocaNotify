@@ -41,7 +41,8 @@ class MainActivity : AppCompatActivity(), NotificationClickInterface,
             this,
             arrayOf(
                 Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.POST_NOTIFICATIONS
             ),
             0
         )
@@ -49,12 +50,7 @@ class MainActivity : AppCompatActivity(), NotificationClickInterface,
         notificationsRV = findViewById(R.id.notificationRV)
         addFAB = findViewById(R.id.idFAB)
         logout = findViewById(R.id.logout)
-        logout.setOnClickListener {
-            FirebaseAuth.getInstance().signOut();
-            var intent = Intent(this,sign_in::class.java)
-            startActivity(intent)
-            Toast.makeText(applicationContext,"Logout Successfully",Toast.LENGTH_SHORT)
-        }
+
 
         notificationsRV.layoutManager = LinearLayoutManager(this)
 
@@ -83,8 +79,17 @@ class MainActivity : AppCompatActivity(), NotificationClickInterface,
         val serviceIntent = Intent(applicationContext, LocationService::class.java)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForegroundService(serviceIntent)
+
         } else {
             startService(serviceIntent)
+        }
+        logout.setOnClickListener {
+            FirebaseAuth.getInstance().signOut();
+            var intent = Intent(this,sign_in::class.java)
+            stopService(serviceIntent)
+            applicationContext.stopService(serviceIntent)
+            startActivity(intent)
+            Toast.makeText(applicationContext,"Logout Successfully",Toast.LENGTH_SHORT)
         }
 
     }
